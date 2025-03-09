@@ -1,0 +1,33 @@
+m3DataConversion License Agreement
+
+Effective Date: March 7, 2025
+
+License Holder: Brad Harrison
+
+1. Grant of License
+This software, **m3DataConversion**, is a personal project developed and owned by Brad Harrison. It is **licensed and not sold**. The software is provided exclusively to a specific list of authorized companies approved by the author.
+
+- **Authorized Companies:** Only companies explicitly approved by the author may use, modify, and deploy this software for internal operations.
+- **No Redistribution:** Redistribution, sublicensing, or public sharing of this software, in whole or in part, **is strictly prohibited** without prior written consent from the author.
+- **No Unauthorized Commercial Use:** The software **may not** be used for any commercial purposes outside of authorized organizations.
+- **Modification for Internal Use:** Authorized companies may modify the software **only for internal purposes** but **cannot** distribute modifications to external parties.
+
+2. Intellectual Property
+- All rights, title, and interest in **m3DataConversion**, including any updates, modifications, or enhancements, remain the exclusive property of the author.
+- This license **does not** grant any ownership rights to the licensee.
+
+3. Termination
+This license is valid until terminated. The author may revoke this license if:
+- The software is used in violation of this agreement.
+- The licensee ceases to be an authorized company.
+- The software is shared with unauthorized parties.
+
+4. Warranty Disclaimer & Liability
+- This software is provided **"as-is"** without warranties of any kind.
+- The author is **not liable** for any damages, loss of data, or business disruptions resulting from the use of this software.
+
+5. Governing Law
+This agreement is governed by the laws of [Your Jurisdiction], and any disputes will be resolved in the courts of [Your Jurisdiction].
+
+6. Contact Information
+For any inquiries about this license, please contact the author directly.
