@@ -1,5 +1,6 @@
 import importlib
 from transformers.mms200_transformer import MMS200Transformer
+from transformers.mms015_transformer import MMS015Transformer
 from transformers.crs025_transformer import CRS025Transformer
 from transformers.crs035_transformer import CRS035Transformer
 from transformers.crs099_transformer import CRS099Transformer
@@ -8,6 +9,7 @@ DEFAULT_TRANSFORMERS = {
     "crs025": CRS025Transformer,
     "crs035": CRS035Transformer,
     "crs099": CRS099Transformer,
+    "mms015": MMS015Transformer,
     "mms200": MMS200Transformer
 }
 
