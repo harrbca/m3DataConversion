@@ -1,4 +1,4 @@
-from m3Models.MMS200_Types import (InventoryAccounting, AltUomInUse, MakeBuyCode, LotControlMethod, ReturnableMessage, LotNumberMethod, ReturnableIndicator)
+from m3.M3Types import (InventoryAccounting, AltUomInUse, MakeBuyCode, LotControlMethod, ReturnableMessage, LotNumberMethod, ReturnableIndicator)
 from dancik.dancik_uom import UOMService
 from m3.item_number_lookup import ItemNumberLookup
 

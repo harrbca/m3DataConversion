@@ -1,5 +1,13 @@
 from enum import IntEnum
 
+class ConversionForm(IntEnum):
+    MULTIPLICATION = 1
+    DIVISION = 2
+
+class AltUomEntryType(IntEnum):
+    QUANTITY = 1,
+    PRICE = 2
+
 class InventoryAccounting(IntEnum):
     NO_INV_ACCOUNTING = 0
     INV_ACCOUNTING = 1

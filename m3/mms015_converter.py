@@ -1,18 +1,11 @@
 from database import Database
 from dancik.dancik_uom import UOMService
-from config_reader import ConfigReader
-from m3Models.mms015_type1_entry import MMS015_Entry
+from m3.M3Types import ConversionForm, AltUomEntryType
+from m3.mms015_entry import MMS015_Entry
 import logging
 import pandas as pd
-from enum import IntEnum
 
-class ConversionForm(IntEnum):
-    MULTIPLICATION = 1
-    DIVISION = 2
 
-class AltUomEntryType(IntEnum):
-    QUANTITY = 1,
-    PRICE = 2
 
 decimal_dict = {
     "SF": 3,
