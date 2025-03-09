@@ -60,7 +60,7 @@ def fetch_data():
             data = [list(row) for row in data]  # Convert from tuple to list
             return pd.DataFrame(data, columns=columns)
         elif db_type == 'mssql':
-            print("Connecting to MSSQL")
+            print("Connecting to MSSQL...")
             conn = connect_mssql()
             cursor = conn.cursor(as_dict=True)
             print("Executing SQL query...")
