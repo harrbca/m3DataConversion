@@ -250,3 +250,5 @@ fabric.properties
 
 # ignore .ini files
 .ini
+credentials.ini
+
