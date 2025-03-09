@@ -47,7 +47,7 @@ def fetch_data():
     conn = None
     try:
         if db_type == 'as400':
-            print("Connecting to AS400 DB2...")
+            print("Connecting to AS400 DB2")
             conn = connect_as400()
             print("✅ Connected to AS400 DB2 successfully!")
             cursor = conn.cursor()
@@ -60,7 +60,7 @@ def fetch_data():
             data = [list(row) for row in data]  # Convert from tuple to list
             return pd.DataFrame(data, columns=columns)
         elif db_type == 'mssql':
-            print("Connecting to MSSQL...")
+            print("Connecting to MSSQL")
             conn = connect_mssql()
             cursor = conn.cursor(as_dict=True)
             print("Executing SQL query...")
