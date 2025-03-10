@@ -8,6 +8,10 @@ rolls_table_name = rolls
 [QUERIES]
 active_item_sql_query_path = queries/active_items_as400.sql
 rolls_sql_query_path = queries/dancik_rolls_as400.sql
+whse_wm0002f_sql_query_path = queries/whse_wm0002f.sql
+whse_wm0003f_sql_query_path = queries/whse_wm0003f.sql
+whse_wm0005f_sql_query_path = queries/whse_wm0005f.sql
+whse_wm0006f_sql_query_path = queries/whse_wm0006f.sql
 identify_long_item_numbers_sql_query_path = queries/identify_long_item_numbers.sql
 crs025_sql_query_path = queries/crs025.sql
 crs035_sql_query_path = queries/crs035.sql
@@ -21,6 +25,11 @@ base_path = c:/infor_migration/
 template_path = templates/
 active_item_path = spreadsheets/active_items.xlsx
 dancik_rolls_path = spreadsheets/dancik_rolls.xlsx
+whse_wm0002f_path = spreadsheets/whse_wm0002f.xlsx
+whse_wm0003f_path = spreadsheets/whse_wm0003f.xlsx
+whse_wm0005f_path = spreadsheets/whse_wm0005f.xlsx
+whse_wm0006f_path = spreadsheets/whse_wm0006f.xlsx
+
 item_xref_path = xref/dancik_to_m3_item_number.xlsx
 
 db_path = db/migration.db
