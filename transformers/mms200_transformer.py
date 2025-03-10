@@ -21,7 +21,7 @@ class MMS200Transformer:
             return None
         self._item = row
 
-        self._uom_service = UOMService(row.itemNumber.strip())
+        self._uom_service = UOMService(row.ITEMNUMBER.strip())
         basic_uom = self.get_basic_uom()
 
         data = {
@@ -45,7 +45,7 @@ class MMS200Transformer:
         return 20
 
     def get_item_number(self):
-        item_number = self._item.itemNumber.strip()
+        item_number = self._item.ITEMNUMBER.strip()
         return self.xref_item_number_lookup.get_item_number(item_number)
 
     def get_item_name(self):
@@ -104,5 +104,5 @@ class MMS200Transformer:
         try:
             return self._uom_service.convert(1, self.get_basic_uom(), "LB")
         except Exception as e:
-            print(f"Error: Unable to convert net weight for item number {self._item.itemNumber}: {e}")
+            print(f"Error: Unable to convert net weight for item number {self._item.ITEMNUMBER}: {e}")
             return ""

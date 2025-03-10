@@ -25,7 +25,7 @@ class MMS015Transformer:
 
     def transform(self, row):
         self._item = row
-        self._uom_service = UOMService(self._item.itemNumber.strip(), 6)
+        self._uom_service = UOMService(self._item.ITEMNUMBER.strip(), 6)
         entries = []
 
         # calculate the basic uom
@@ -45,7 +45,7 @@ class MMS015Transformer:
             uom_list.remove("LB")
             uom_list.remove(basic_uom)
         except ValueError:
-            logging.error(f"🥴 UOM List does not contain uom: {basic_uom} or LB for item {item.itemNumber.strip()}")
+            logging.error(f"🥴 UOM List does not contain uom: {basic_uom} or LB for item {self._item.ITEMNUMBER.strip()}")
             return []
 
         # and if this is a rolled good, remove the IN conversion ( and probably the SF conversion as well )
@@ -144,7 +144,7 @@ class MMS015Transformer:
             return 0
 
     def get_item_number(self):
-        item_number = self._item.itemNumber.strip()
+        item_number = self._item.ITEMNUMBER.strip()
         return self.xref_item_number_lookup.get_item_number(item_number)
 
     def get_basic_uom(self):

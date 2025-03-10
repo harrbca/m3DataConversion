@@ -64,7 +64,7 @@ def main():
             print(f"Item {item_number} not found.")
             continue
 
-        uom_service = UOMService(item.itemNumber.strip())
+        uom_service = UOMService(item.ITEMNUMBER.strip())
 
 
         mms200_data = mms200_transformer.transform(item)
