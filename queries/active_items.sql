@@ -3,7 +3,7 @@ with
     AS
     (
 
-                    select 'BWL' as schemaName, Rtrim(concat(item.imfgr, item.icolor, item.ipatt)) as itemNumber,
+                    select 'BWL' as schemaName, Rtrim(concat(item.imfgr, item.icolor, item.ipatt)) as ITEMNUMBER,
     [IMFGR],
     [ICOLOR],
     [IPATT],
@@ -126,7 +126,7 @@ with
 
         UNION ALL
 
-            select 'WAN' as schemaName, rtrim(concat(item.imfgr, item.icolor, item.ipatt)) as itemNumber,
+            select 'WAN' as schemaName, rtrim(concat(item.imfgr, item.icolor, item.ipatt)) as ITEMNUMBER,
     [IMFGR],
     [ICOLOR],
     [IPATT],
@@ -252,7 +252,7 @@ with
 SELECT *
 FROM (
     SELECT *,
-           ROW_NUMBER() OVER (PARTITION BY itemNumber ORDER BY priority) AS rn
+           ROW_NUMBER() OVER (PARTITION BY ITEMNUMBER ORDER BY priority) AS rn
     FROM CombinedData
 ) AS Ranked
 WHERE rn = 1

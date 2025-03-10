@@ -1,3 +1,5 @@
+from typing import List
+
 from dancik.dancik_uom import UOMService
 from m3.M3Types import ConversionForm, AltUomEntryType
 from m3.item_number_lookup import ItemNumberLookup
@@ -23,7 +25,7 @@ class MMS015Transformer:
         self._item = None
         self._uom_service = None
 
-    def transform(self, row):
+    def transform(self, row) -> List[dict]:
         self._item = row
         self._uom_service = UOMService(self._item.ITEMNUMBER.strip(), 6)
         entries = []

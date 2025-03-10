@@ -1,48 +1,35 @@
-from config_reader import ConfigReader
 from database import Database
 from template_helper import TemplateHelper
-from m3.mms015_converter import get_mms015_entries_from_item_data, AltUomEntryType
+from plugin_manager import load_transformer
+from config_reader import ConfigReader
 
-config = ConfigReader.get_instance()
 
-query_path = config.get('QUERIES', 'mms200_addItmBasic_sql_query_path')
-query = None
+def main():
+    config = ConfigReader.get_instance()
+    template_helper = TemplateHelper("API_MMS015MI_Add.xlsx")
+    query_path = config.get('QUERIES', 'mms200_addItmBasic_sql_query_path')
+    transformer = config.get("TRANSFORMER", "mms015_transformer")
 
-try:
+    # load the SQL query
     with open(query_path, 'r') as file:
         query = file.read()
-except Exception as e:
-    print(f"Error reading query file: {e}")
-    exit()
 
-with Database() as db:
-    df = db.fetch_dataframe(query)
+    # fetch data from DB
+    with Database() as db:
+        df = db.fetch_dataframe(query)
 
-template_helper = TemplateHelper("API_MMS015_Add.xlsx")
+    # load the transformer (default or custom)
+    transformer = load_transformer("mms015", transformer)
 
-for row in df.itertuples(index = False):
+    for row in df.itertuples(index=False):
+        data = transformer.transform(row)
+        if data:
+            for entries in data:
+                template_helper.add_row(entries)
 
-    entries = get_mms015_entries_from_item_data(row)
-    for(entry) in entries:
-        data = {
-            "ITNO": row.itemNumber.strip(),
-            "AUTP": entry.altUomType,
-            "ALUN": entry.altUom,
-            "COFA": entry.convFactor,
-            "DMCF": entry.convForm
-        }
+    template_helper.save('mms015_add_output_path')
 
-        if entry.altUomType == AltUomEntryType.QUANTITY:
-            data["DCCD"] = entry.decimalPlaces
-            data["UNMU"] = entry.orderMultiple
-            data["AUS2"] = 1 if entry.isCustOrdUOM else 0
-            data["AUS6"] = 1 if entry.isStatisticsUom else 0
-            data["AUSB"] = 1 if entry.isCostUom else 0
+if __name__ == "__main__":
+    main()
 
-        if entry.altUomType == AltUomEntryType.PRICE:
-            data["AUS5"] = 1 if entry.isPurchasePriceUOM else 0
-            data["AUS9"] = 1 if entry.isSalesPriceUOM else 0
 
-        template_helper.add_row(data)
-
-template_helper.save('mms215_add_output_path')
