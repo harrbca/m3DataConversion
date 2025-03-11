@@ -9,7 +9,10 @@ QUERY = "SELECT * FROM ITEMS where itemNumber = ?"
 def _fetch_item_data(item_number):
     with Database() as db:
         result = db.fetch_dataframe(QUERY, (item_number,))
-        return result.itertuples(index=False).__next__() if not result.empty else None
+        # return first row of result as a dict
+        return result.iloc[0].to_dict() if not result.empty else None
+
+
 
 
 def format_item_data(item_data):
@@ -64,7 +67,7 @@ def main():
             print(f"Item {item_number} not found.")
             continue
 
-        uom_service = UOMService(item.ITEMNUMBER.strip())
+        uom_service = UOMService(item["ITEMNUMBER"].strip())
 
 
         mms200_data = mms200_transformer.transform(item)

@@ -27,7 +27,7 @@ class MMS015Transformer:
 
     def transform(self, row) -> List[dict]:
         self._item = row
-        self._uom_service = UOMService(self._item.ITEMNUMBER.strip(), 6)
+        self._uom_service = UOMService(self._item["ITEMNUMBER"].strip(), 6)
         entries = []
 
         # calculate the basic uom
@@ -51,7 +51,7 @@ class MMS015Transformer:
             return []
 
         # and if this is a rolled good, remove the IN conversion ( and probably the SF conversion as well )
-        if self._item.ICOMPO == 'R':
+        if self._item["ICOMPO"] == 'R':
             uom_list.remove("IN")
             uom_list.remove("SF")
 
@@ -63,7 +63,7 @@ class MMS015Transformer:
             is_sales_uom = sales_uom == uom
             is_cost_uom = cost_uom == uom
             is_statistics_uom = statistics_uom == uom
-            is_purchase_uom = self._item.IUNITC == uom
+            is_purchase_uom = self._item["IUNITC"] == uom
 
             conversion_factor, conversion_form = self._calculate_conversion_details(basic_uom, uom)
 
@@ -125,19 +125,19 @@ class MMS015Transformer:
         return conversion_factor, conversion_form
 
     def get_statistics_uom(self):
-        return self._item.IUNITS.strip()
+        return self._item["IUNITS"].strip()
 
     def get_sales_uom(self):
-        return self._item.IUNITS.strip()
+        return self._item["IUNITS"].strip()
 
     def get_cost_uom(self):
-        return self._item.IUNITC.strip()
+        return self._item["IUNITC"].strip()
 
     def get_all_uoms(self):
         return self._uom_service.get_uom_list()
 
     def get_is_no_break(self):
-        return self._item.IPOL1.strip() == "NB" or self._item.IPOL2.strip() == "NB" or self._item.IPOL3.strip() == "NB"
+        return self._item["IPOL1"].strip() == "NB" or self._item["IPOL2"].strip() == "NB" or self._item["IPOL3"].strip() == "NB"
 
     def calculate_order_multiple(self, is_no_break, conversion_factor):
         if is_no_break:
@@ -146,15 +146,15 @@ class MMS015Transformer:
             return 0
 
     def get_item_number(self):
-        item_number = self._item.ITEMNUMBER.strip()
+        item_number = self._item["ITEMNUMBER"].strip()
         return self.xref_item_number_lookup.get_item_number(item_number)
 
     def get_basic_uom(self):
-        if self._item.ICOMPO == 'R':
+        if self._item["ICOMPO"] == 'R':
             return "LF"
         else:
-            if self._item.IUM2 is None:
-                return self._item.IUNITS.strip()
+            if self._item["IUM2"] is None:
+                return self._item["IUNITS"].strip()
             else:
-                return f"{self._item.IUM2.strip()}"
+                return f"{self._item["IUM2"].strip()}"
 
