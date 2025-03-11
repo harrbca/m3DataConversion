@@ -1,5 +1,7 @@
 import importlib
 from transformers.mms200_transformer import MMS200Transformer
+from transformers.mms200_addItmViaItmTyp_transformer import MMS200AddItmViaItmTypTransformer
+from transformers.mms200_updItmBasic_transformer import MMS200UpdItmBasicTransformer
 from transformers.mms015_transformer import MMS015Transformer
 from transformers.crs025_transformer import CRS025Transformer
 from transformers.crs035_transformer import CRS035Transformer
@@ -10,7 +12,9 @@ DEFAULT_TRANSFORMERS = {
     "crs035": CRS035Transformer,
     "crs099": CRS099Transformer,
     "mms015": MMS015Transformer,
-    "mms200": MMS200Transformer
+    "mms200": MMS200Transformer,
+    "mms200_addItmViaItmTyp": MMS200AddItmViaItmTypTransformer,
+    "mms200_updItmBasic": MMS200UpdItmBasicTransformer
 }
 
 def load_transformer(transformer_key, plugin_path=None):
@@ -24,7 +28,7 @@ def load_transformer(transformer_key, plugin_path=None):
         return plugin_class()  # instantiate the custom
 
     # Otherwise, return the default from our dictionary
-    default_class = DEFAULT_TRANSFORMERS.get(transformer_key.lower())
+    default_class = DEFAULT_TRANSFORMERS.get(transformer_key)
     if default_class is None:
         raise ValueError(f"No default transformer found for key '{transformer_key}'")
     return default_class()
