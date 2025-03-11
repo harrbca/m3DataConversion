@@ -1,3 +1,3 @@
 select * from items
-where imfgr = 'CAS'
+where iprodl in ('ACU', 'HLI', 'AFS', 'CB1', 'ACC')
 order by itemNumber

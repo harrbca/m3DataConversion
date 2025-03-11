@@ -40,3 +40,10 @@ crs035_output_path = output/API_CRS035MI_AddProductGroup_{timestamp}.xlsx
 crs099_output_path = output/API_CRS099MI_AddProductLine_{timestamp}.xlsx
 mms200_addItmBasic_output_path = output/API_MMS200MI_AddItmBasic_{timestamp}.xlsx
 mms015_add_output_path = output/API_MMS015MI_Add_{timestamp}.xlsx
+
+[TRANSFORMER]
+crs025_transformer = transformers.crs025_transformer.CRS025Transformer
+crs035_transformer = transformers.crs035_transformer.CRS035Transformer
+crs099_transformer = transformers.crs099_transformer.CRS099Transformer
+mms200_transformer = transformers.mms200_transformer.MMS200Transformer
+mms015_transformer = transformers.mms015_transformer.MMS015Transformer
