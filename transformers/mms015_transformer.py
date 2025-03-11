@@ -63,7 +63,7 @@ class MMS015Transformer:
             is_sales_uom = sales_uom == uom
             is_cost_uom = cost_uom == uom
             is_statistics_uom = statistics_uom == uom
-            is_purchase_uom = self._item["IUNITC"] == uom
+            is_purchase_uom = self.get_purchase_uom() == uom
 
             conversion_factor, conversion_form = self._calculate_conversion_details(basic_uom, uom)
 
@@ -105,6 +105,9 @@ class MMS015Transformer:
                 }
                 entries.append(data)
 
+
+        # remove any entries that have a ALUN of CO ( skip container converstions )
+        entries = [entry for entry in entries if entry["ALUN"] != "CO"]
         # sort the entries byu AUTP
         entries.sort(key=lambda x: x["AUTP"])
         return entries
@@ -125,12 +128,23 @@ class MMS015Transformer:
         return conversion_factor, conversion_form
 
     def get_statistics_uom(self):
+        if self.get_basic_uom() == "CT":
+            return "SF"
         return self._item["IUNITS"].strip()
 
+    def get_purchase_uom(self):
+        if self.get_basic_uom() == "CT":
+            return "SF"
+        return self._item["IUNITC"].strip
+
     def get_sales_uom(self):
+        if self.get_basic_uom() == "CT":
+            return "SF"
         return self._item["IUNITS"].strip()
 
     def get_cost_uom(self):
+        if self.get_basic_uom() == "CT":
+            return "SF"
         return self._item["IUNITC"].strip()
 
     def get_all_uoms(self):
