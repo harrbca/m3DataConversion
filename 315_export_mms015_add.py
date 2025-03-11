@@ -21,7 +21,7 @@ def main():
     # load the transformer (default or custom)
     transformer = load_transformer("mms015", transformer)
 
-    for row in df.itertuples(index=False):
+    for row in df.to_dict(orient='records'):
         data = transformer.transform(row)
         if data:
             for entries in data:
