@@ -55,4 +55,11 @@ class ReturnableIndicator(IntEnum):
     NOT_RET_SUPPLY = 2
     NOT_RETURNABLE = 3
 
+class SalesItem(IntEnum):
+    NO = 0
+    YES = 1
+    YES_BUT_ONLY_KIT = 2
+
+
+
 

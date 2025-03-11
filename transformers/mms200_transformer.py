@@ -84,7 +84,9 @@ class MMS200Transformer:
             "SAFC": self.get_suppliers_abc_code(),
             "RMSG": self.get_returnable_message(),
             "PDLN": self.get_product_line(),
-            "SRGR": self.get_supplier_rebate_generating()
+            "SRGR": self.get_supplier_rebate_generating(),
+            "SALE": self.get_sales_item(),
+            "SPUC": self.get_fixed_or_dynamic_uom()
 
 
 
@@ -261,4 +263,10 @@ class MMS200Transformer:
         pass
 
     def get_supplier_rebate_generating(self):
+        pass
+
+    def get_sales_item(self):
+        pass
+
+    def get_fixed_or_dynamic_uom(self):
         pass
