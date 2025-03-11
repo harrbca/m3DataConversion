@@ -3,7 +3,7 @@ from transformers.mms200_transformer import MMS200Transformer
 class BWLMMS200Transformer(MMS200Transformer):
 
     def get_item_number(self):
-        item_number = self._item.ITEMNUMBER.strip()
+        item_number = self._item["ITEMNUMBER"].strip()
         if len(item_number) < 3:
             return item_number  # Return as is if item_number is too short
 

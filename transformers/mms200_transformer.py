@@ -21,7 +21,7 @@ class MMS200Transformer:
             return None
         self._item = row
 
-        self._uom_service = UOMService(row.ITEMNUMBER.strip())
+        self._uom_service = UOMService(row["ITEMNUMBER"].strip())
         basic_uom = self.get_basic_uom()
 
         data = {
@@ -96,35 +96,35 @@ class MMS200Transformer:
         return 20
 
     def get_item_number(self):
-        item_number = self._item.ITEMNUMBER.strip()
+        item_number = self._item["ITEMNUMBER"].strip()
         return self.xref_item_number_lookup.get_item_number(item_number)
 
     def get_item_name(self):
-        return f"{self._item.INAME.strip()} {self._item.INAME2.strip()}"
+        return f"{self._item["INAME"].strip()} {self._item["INAME2"].strip()}"
 
     def get_item_description(self):
-        return f"{self._item.ICOMM1.strip()}"
+        return f"{self._item["ICOMM1"].strip()}"
 
     def get_responsible(self):
         return ""
 
     def get_basic_uom(self):
-        if self._item.ICOMPO == 'R':
+        if self._item["ICOMPO"] == 'R':
             return "LF"
         else:
-            if self._item.IUM2 is None:
-                return self._item.IUNITS.strip()
+            if self._item["IUM2"] is None:
+                return self._item["IUNITS"].strip()
             else:
-                return f"{self._item.IUM2.strip()}"
+                return f"{self._item["IUM2"].strip()}"
 
     def get_item_group(self):
-        return self._item.IPRCCD.strip()
+        return self._item["IPRCCD"].strip()
 
     def get_product_line(self):
-        return self._item.IMFGR.strip() + self._item.IPRODL.strip()
+        return self._item["IMFGR"].strip() + self._item["IPRODL"].strip()
 
     def get_product_group(self):
-        return self._item.IMFGR.strip()
+        return self._item["IMFGR"].strip()
 
     def get_alt_uom_in_use(self):
         return AltUomInUse.ITEM_UOM
@@ -142,12 +142,12 @@ class MMS200Transformer:
         return InventoryAccounting.INV_ACCOUNTING
 
     def get_returnable_indicator(self):
-        if self._item.IINVEN.strip() == 'Y':
+        if self._item["IINVEN"].strip() == 'Y':
             return ReturnableIndicator.RETURNABLE
         return ReturnableIndicator.NOT_RETURNABLE
 
     def get_returnable_message(self):
-        if self._item.IINVEN.strip() == 'Y':
+        if self._item["IINVEN"].strip() == 'Y':
             return ReturnableMessage.NO_MESSAGES
         return ReturnableMessage.WARNING_WARN
 
@@ -155,7 +155,7 @@ class MMS200Transformer:
         try:
             return self._uom_service.convert(1, self.get_basic_uom(), "LB")
         except Exception as e:
-            print(f"Error: Unable to convert net weight for item number {self._item.ITEMNUMBER}: {e}")
+            print(f"Error: Unable to convert net weight for item number {self._item["ITEMNUMBER"]}: {e}")
             return ""
 
     def get_business_group(self):
