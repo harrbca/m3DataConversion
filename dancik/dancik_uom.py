@@ -15,8 +15,11 @@ class UOMService:
         self.item_number = item_number
         self.config = ConfigReader.get_instance()
         query_path = self.config.get("QUERIES", "dancik_package_query_path")
+        query_item_package_path = self.config.get("QUERIES", "dancik_package_item_query_path", "queries/dancik_package_item_query.sql")
         with open(query_path) as file:
             self.package_query = file.read()
+        with open(query_item_package_path) as file:
+            self.item_package_query = file.read()
         self.item_details = self._load_item_details()
         self._build_bidirectional_conversion_graph()
         self.logger.debug("Conversion graph:")
@@ -29,15 +32,15 @@ class UOMService:
 
 
         if df.empty:
+            with self.db as db:
+                df = db.fetch_dataframe(self.item_package_query,(self.item_number,))
+
+        if df.empty:
             print(f"Error: No item details found for item number {self.item_number}")
             return None
 
         if len(df) > 1:
             print(f"Error: Multiple item details found for item number {self.item_number}")
-            return None
-
-        if df.iloc[0]["IPACCD"].strip() == '':
-            print(f"Error: No IPACCD found for item number {self.item_number}")
             return None
 
         return df.iloc[0].to_dict()
