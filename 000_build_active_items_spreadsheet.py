@@ -33,13 +33,15 @@ def connect_as400():
 
 
 def connect_mssql():
-    """Establish a connection to the MSSQL database."""
-    return pymssql.connect(
-        server=config.get_connection('DB_SERVER'),
-        user=config.get_connection('DB_USERNAME'),
-        password=config.get_connection('DB_PASSWORD'),
-        database=config.get_connection('DB_DATABASE')
+    """Establish a connection to the MSSQL database via pyodbc."""
+    conn_str = (
+        f"DRIVER={{ODBC Driver 17 for SQL Server}};"  # or your installed driver version
+        f"SERVER={config.get_connection('DB_SERVER')};"
+        f"DATABASE={config.get_connection('DB_DATABASE')};"
+        f"UID={config.get_connection('DB_USERNAME')};"
+        f"PWD={config.get_connection('DB_PASSWORD')};"
     )
+    return pyodbc.connect(conn_str)
 
 
 def fetch_data():
@@ -62,11 +64,15 @@ def fetch_data():
         elif db_type == 'mssql':
             print("Connecting to MSSQL...")
             conn = connect_mssql()
-            cursor = conn.cursor(as_dict=True)
+            cursor = conn.cursor()
             print("Executing SQL query...")
             cursor.execute(select_query)
+            columns = [column[0] for column in cursor.description]  # Fetch column names
             data = cursor.fetchall()
-            return pd.DataFrame(data)
+
+            # Ensure each row is a list instead of a tuple
+            data = [list(row) for row in data]  # Convert from tuple to list
+            return pd.DataFrame(data, columns=columns)
         else:
             print("Invalid database type. Please choose 'as400' or 'mssql'.")
             return None

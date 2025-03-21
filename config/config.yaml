@@ -1,0 +1,21 @@
+credentials:
+  driver: iSeries Access ODBC Driver
+  host: IPADDRESS
+  user: USERNAME
+  password: PASSWORD
+
+
+db_path: db/migration.db
+
+queries:
+    dancik:
+      active_items: queries/active_items.sql
+      rolls: queries/rolls.sql
+      wm0002f: queries/wm0002f.sql
+      wm0003f: queries/wm0003f.sql
+      wm0005f: queries/wm0005f.sql
+      wm0006f: queries/wm0006f.sql
+    m3:
+      crs025: queries/crs025.sql
+      crs035: queries/crs035.sql
+      crs099: queries/crs099.sql

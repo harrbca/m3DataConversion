@@ -1,0 +1,36 @@
+{
+  "Dashboard": {
+    "title": "🏠 Dashboard",
+    "view": "Dashboard"
+  },
+  "Extract": {
+    "title": "📦 Extract",
+    "submenu": {
+      "Active Items": { "view": "ExtractSpreadsheetView" }
+    }
+  },
+  "Import": {
+    "title": "📥 Import",
+    "submenu": {
+      "Items": { "view": "ImportItemsView" },
+      "Locations": { "view": "ImportLocationsView" },
+      "Inventory": { "view": "ImportInventoryView" }
+    }
+  },
+  "Export": {
+    "title": "📤 Export",
+    "submenu": {
+      "MMS200_AddItmBasic": { "view": "ExportMMS200View" },
+      "MMS015_add": { "view": "ExportMMS015View" },
+      "CRS099_add": { "view": "ExportCRS099View" }
+    }
+  },
+  "Tests": {
+    "title": "✅ Tests",
+    "view": "TestsView"
+  },
+  "Settings": {
+    "title": "⚙️ Settings",
+    "view": "SettingsView"
+  }
+}
