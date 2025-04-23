@@ -47,7 +47,7 @@ class MMS015Transformer:
             uom_list.remove("LB")
             uom_list.remove(basic_uom)
         except ValueError:
-            logging.error(f"🥴 UOM List does not contain uom: {basic_uom} or LB for item {self._item.ITEMNUMBER.strip()}")
+            logging.error(f"🥴 UOM List does not contain uom: {basic_uom} or LB for item {self._item["ITEMNUMBER"].strip()}")
             return []
 
         # and if this is a rolled good, remove the IN conversion ( and probably the SF conversion as well )
