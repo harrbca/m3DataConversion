@@ -118,7 +118,7 @@ if __name__ == '__main__':
     )
 
     results_df = pd.DataFrame(results)
-    output_excel = "c:\\infor_migration\\spreadsheets\\map_hierarchy_to_items9.xlsx"
+    output_excel = "c:\\infor_migration\\spreadsheets\\map_hierarchy_to_items10.xlsx"
     results_df.to_excel(output_excel, index=False)
     print(f"📄 Excel written to: {output_excel}")
 

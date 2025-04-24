@@ -6,6 +6,7 @@ from transformers.mms015_transformer import MMS015Transformer
 from transformers.crs025_transformer import CRS025Transformer
 from transformers.crs035_transformer import CRS035Transformer
 from transformers.crs099_transformer import CRS099Transformer
+from transformers.crs610_add_transformer import CRS610AddTransformer
 
 DEFAULT_TRANSFORMERS = {
     "crs025": CRS025Transformer,
@@ -14,7 +15,8 @@ DEFAULT_TRANSFORMERS = {
     "mms015": MMS015Transformer,
     "mms200": MMS200Transformer,
     "mms200_addItmViaItmTyp": MMS200AddItmViaItmTypTransformer,
-    "mms200_updItmBasic": MMS200UpdItmBasicTransformer
+    "mms200_updItmBasic": MMS200UpdItmBasicTransformer,
+    "crs610_add": CRS610AddTransformer
 }
 
 def load_transformer(transformer_key, plugin_path=None):

@@ -2,8 +2,8 @@ with CombinedData as (
     select 'BWL' as schemaName,
            accountNumber
            ,[BCO#]
-      ,[BACCT#]
-      ,[BSLMN#]
+      ,[BACCT#] as BACCT
+      ,[BSLMN#] as BSLMN
       ,[BNAME]
       ,[BADDR1]
       ,[BADDR2]
@@ -33,7 +33,7 @@ with CombinedData as (
       ,[BLANGU]
       ,[BSPCLP]
       ,[BPOWRK]
-      ,[BBRAN#]
+      ,[BBRAN#] as BBRAN
       ,[BINVWK]
       ,[BORDER]
       ,[BTRRT1]
@@ -46,18 +46,18 @@ with CombinedData as (
       ,[BBANK1]
       ,[FILLER]
       ,[BMSGCD]
-      ,[BAR#]
+      ,[BAR#] as BAR
       ,[BML]
-      ,[BINT$]
-      ,[BBNK#2]
+      ,[BINT$] as BINT
+      ,[BBNK#2] as BBNK2
       ,[BBANK2]
       ,[FILL1]
-      ,[BSHIP#]
-      ,[BWARE#]
+      ,[BSHIP#] as BSHIP
+      ,[BWARE#] as BWARE
       ,[BCHAIN]
       ,[BINTPC]
       ,[FILL2]
-      ,[BSS#]
+      ,[BSS#] as BSS
       ,[BSTHIS]
       ,[BOPENA]
       ,[BOV15]
@@ -90,8 +90,8 @@ with CombinedData as (
     select 'WAN' as schemaName,
            accountNumber
            ,[BCO#]
-      ,[BACCT#]
-      ,[BSLMN#]
+            ,[BACCT#] as BACCT
+      ,[BSLMN#] as BSLMN
       ,[BNAME]
       ,[BADDR1]
       ,[BADDR2]
@@ -121,7 +121,7 @@ with CombinedData as (
       ,[BLANGU]
       ,[BSPCLP]
       ,[BPOWRK]
-      ,[BBRAN#]
+      ,[BBRAN#] as BBRAN
       ,[BINVWK]
       ,[BORDER]
       ,[BTRRT1]
@@ -134,18 +134,18 @@ with CombinedData as (
       ,[BBANK1]
       ,[FILLER]
       ,[BMSGCD]
-      ,[BAR#]
+      ,[BAR#] as BAR
       ,[BML]
-      ,[BINT$]
-      ,[BBNK#2]
+      ,[BINT$] as BINT
+      ,[BBNK#2] as BBNK2
       ,[BBANK2]
       ,[FILL1]
-      ,[BSHIP#]
-      ,[BWARE#]
+      ,[BSHIP#] as BSHIP
+      ,[BWARE#] as BWARE
       ,[BCHAIN]
       ,[BINTPC]
       ,[FILL2]
-      ,[BSS#]
+      ,[BSS#] as BSS
       ,[BSTHIS]
       ,[BOPENA]
       ,[BOV15]

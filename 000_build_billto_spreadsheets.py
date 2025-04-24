@@ -1,4 +1,6 @@
 import os
+from decimal import Decimal
+
 import pandas as pd
 import pyodbc
 import pymssql
@@ -6,6 +8,7 @@ from config_reader import ConfigReader
 import config_keys
 from path_manager import PathManager
 import re
+from database import Database
 
 # Initialize configuration and path manager
 config = ConfigReader.get_instance()
@@ -108,13 +111,19 @@ def do_data_load(query_path, excel_path):
 
     save_to_excel(excel_path, data_frame)
 
+    # convert any decimal instances to strings.  SQLLITE does not support decimal types
+    df = data_frame.applymap(lambda x: str(x) if isinstance(x, Decimal) else x)
+
+    # Load the data into the database
+    with Database() as db:
+        df.to_sql("billto", db.conn, if_exists="replace", index=False)
+        print(f"✅ Data successfully loaded into the database table")
+
 
 def main():
     query_path = config.get("QUERIES", "billto_sql_query_path")
     excel_path = path_manager.get_path("PATHS", "billto_path")
     do_data_load(query_path, excel_path)
-
-
     print("✅ Done!")
 
 
