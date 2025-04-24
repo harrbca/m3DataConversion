@@ -42,6 +42,12 @@ def vectorized_match(item, weights=None):
 
     df = _global_df
 
+    # ❗ Filter out any rows where price_class matches OPC1 to OPC4
+    omit_cols = [col for col in df.columns if col.startswith("OPC")]
+    if omit_cols:
+        omit_mask = df[omit_cols].eq(price_class).any(axis=1)
+        df = df[~omit_mask]  # Keep only non-matching rows
+
     feature_hits = {
         "price_class": df[_pc_cols].eq(price_class).any(axis=1),
         "product_line": df[["PL1", "PL2"]].eq(product_line).any(axis=1),
@@ -72,6 +78,7 @@ def vectorized_match(item, weights=None):
     if max_score > 0:
         best_row = df.loc[max_idx]
         result.update({
+            "ItemType": best_row["ItemType"],
             "H1": best_row["H1"],
             "H2": best_row["H2"],
             "H3": best_row["H3"],
@@ -83,7 +90,7 @@ def vectorized_match(item, weights=None):
         })
         result["MatchedFields"] = ", ".join([k for k, v in feature_hits.items() if v[max_idx]])
     else:
-        result.update({k: None for k in ["H1", "H2", "H3", "H4", "H1Desc", "H2Desc", "H3Desc", "H4Desc"]})
+        result.update({k: None for k in ["ItemType", "H1", "H2", "H3", "H4", "H1Desc", "H2Desc", "H3Desc", "H4Desc"]})
         result["MatchedFields"] = ""
 
     return result
