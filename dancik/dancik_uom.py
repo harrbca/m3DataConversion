@@ -116,7 +116,9 @@ class UOMService:
                 if neighbor not in visited:
                     queue.append((neighbor, path + [(current_unit, neighbor, conversion_rate)], conversion_rate))
 
-        raise ValueError(f"No conversion path found between {from_uom} and {to_uom}.")
+        #raise ValueError(f"No conversion path found between {from_uom} and {to_uom} for item {self.item_number}.")
+        print (f"Error: No conversion path found between {from_uom} and {to_uom} for item {self.item_number}.")
+        return []
 
     def get_uom_list(self):
         return list(self.graph.keys())

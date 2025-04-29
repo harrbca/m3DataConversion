@@ -21,6 +21,7 @@ def main():
     transformer = load_transformer("mms200_addItmViaItmTyp", transformer)
 
     for row in df.to_dict(orient='records'):
+        print (row["ITEMNUMBER"])
         data = transformer.transform(row)
         if data:
             template_helper.add_row(data)
