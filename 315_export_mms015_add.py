@@ -2,7 +2,19 @@ from database import Database
 from template_helper import TemplateHelper
 from plugin_manager import load_transformer
 from config_reader import ConfigReader
+import logging
+from datetime import datetime
 
+# Set up logging to file
+log_filename = f"mms015_transform_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log"
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s [%(levelname)s] %(name)s - %(message)s',
+    handlers=[
+        logging.FileHandler(log_filename, mode='w'),
+        #logging.StreamHandler()  # Optional: keep this if you also want console output
+    ]
+)
 
 def main():
     config = ConfigReader.get_instance()
@@ -22,6 +34,9 @@ def main():
     transformer = load_transformer("mms015", transformer)
 
     for row in df.to_dict(orient='records'):
+        if row['ITEMNUMBER'] == 'CRVAV324206UPS':
+            print(row)
+
         data = transformer.transform(row)
         if data:
             for entries in data:
