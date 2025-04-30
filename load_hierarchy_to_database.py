@@ -1,7 +1,7 @@
 from database import Database
 import pandas as pd
 
-EXCEL_PATH = r"c:\infor_migration\spreadsheets\map_hierarchy_to_items14.xlsx"
+EXCEL_PATH = r"c:\infor_migration\spreadsheets\map_hierarchy_to_items15.xlsx"
 TABLE_NAME = "item_hierarchy"
 MONITORED_FIELDS = ["H1", "H2", "H3", "H4", "ItemType"]
 
