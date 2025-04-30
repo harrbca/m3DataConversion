@@ -51,7 +51,7 @@ def vectorized_match(item, weights=None):
     feature_hits = {
         "price_class": df[_pc_cols].eq(price_class).any(axis=1),
         "product_line": df[["PL1", "PL2"]].eq(product_line).any(axis=1),
-        "item_class2": df["IC2"] == item_class2,
+        "item_class2": (df["IC2"] == item_class2) & (item_class2 != ""),
         "item_class1": df["IC1"] == item_class1,
         "manufacturer": df["MFGR"] == manufacturer,
     }
@@ -125,7 +125,7 @@ if __name__ == '__main__':
     )
 
     results_df = pd.DataFrame(results)
-    output_excel = "c:\\infor_migration\\spreadsheets\\map_hierarchy_to_items10.xlsx"
+    output_excel = "c:\\infor_migration\\spreadsheets\\map_hierarchy_to_items14.xlsx"
     results_df.to_excel(output_excel, index=False)
     print(f"📄 Excel written to: {output_excel}")
 

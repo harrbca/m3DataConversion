@@ -64,6 +64,7 @@ class MMS200UpdItmBasicTransformer(MMS200Transformer):
             "DCCD": self.get_number_of_decimals(),
             "PDCC": self.get_number_of_price_decimals(),
             "PRVG": self.get_commission_group(),
+
             "ITNE": self.get_extended_item_number(),
             "RNRI": self.get_returnable_indicator(),
             "SAFC": self.get_suppliers_abc_code(),
@@ -77,4 +78,41 @@ class MMS200UpdItmBasicTransformer(MMS200Transformer):
         return data
 
     def get_item_type(self):
-        return "VIN"
+        return self._item["ItemType"].strip()
+
+    def get_item_number(self):
+        item_number = self._item["ITEMNUMBER"].strip()
+        if len(item_number) < 3:
+            return item_number  # Return as is if item_number is too short
+
+        mfgr_prefix = item_number[:3]  # Get the first three characters
+        item_suffix = item_number[3:]  # The rest of the item number
+
+        # Define special cases for manufacturer prefixes
+        special_prefixes = {"CAS": "CA", "CAR": "CR", "CAP": "CP"}
+
+        # Determine new prefix
+        new_prefix = special_prefixes.get(mfgr_prefix, mfgr_prefix[:2])
+
+        # Construct the new item number
+        return new_prefix + item_suffix
+
+    def get_hierarchy_1(self):
+        if self._item["H1"] is None:
+            return ""
+        return self._item["H1"].strip()
+
+    def get_hierarchy_2(self):
+        if self._item["H2"] is None:
+            return ""
+        return self.get_hierarchy_1() + self._item["H2"].strip()
+
+    def get_hierarchy_3(self):
+        if self._item["H3"] is None:
+            return ""
+        return self.get_hierarchy_2()+self._item["H3"].strip()
+
+    def get_hierarchy_4(self):
+        if self._item["H4"] is None:
+            return ""
+        return self.get_hierarchy_3()+self._item["H4"].strip()

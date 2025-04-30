@@ -154,6 +154,9 @@ class MMS200Transformer:
         return ReturnableMessage.WARNING_WARN
 
     def get_net_weight(self):
+        pass
+
+    def get_gross_weight(self):
         try:
             return self._uom_service.convert(1, self.get_basic_uom(), "LB")
         except Exception as e:
@@ -175,8 +178,6 @@ class MMS200Transformer:
     def get_inventory_accounting(self):
         pass
 
-    def get_gross_weight(self):
-        pass
 
     def get_inspection_code(self):
         pass
