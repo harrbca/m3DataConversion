@@ -28,4 +28,4 @@ class CRS099Transformer:
         return self._item.lname.strip()
 
     def get_name(self):
-        return ""
+        return self._item.lname[:15].strip()  # Limit to 15 characters
