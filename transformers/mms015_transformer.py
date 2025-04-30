@@ -48,7 +48,7 @@ class MMS015Transformer:
             uom_list.remove("LB")
             uom_list.remove(basic_uom)
         except ValueError:
-            logging.error(f"🥴 UOM List does not contain uom: {basic_uom} or LB for item {self._item["ITEMNUMBER"].strip()}")
+            logging.error(f"UOM List does not contain uom: {basic_uom} or LB for item {self._item["ITEMNUMBER"].strip()}")
             return []
 
         # and if this is a rolled good, remove the IN conversion ( and probably the SF conversion as well )
@@ -61,50 +61,55 @@ class MMS015Transformer:
 
         # loop through the uom list and calculate the conversion details
         for uom in uom_list:
-            is_sales_uom = sales_uom == uom
-            is_cost_uom = cost_uom == uom
-            is_statistics_uom = statistics_uom == uom
-            is_purchase_uom = self.get_purchase_uom() == uom
+            try:
+                is_sales_uom = sales_uom == uom
+                is_cost_uom = cost_uom == uom
+                is_statistics_uom = statistics_uom == uom
+                is_purchase_uom = self.get_purchase_uom() == uom
 
-            conversion_factor, conversion_form = self._calculate_conversion_details(basic_uom, uom)
+                conversion_factor, conversion_form = self._calculate_conversion_details(basic_uom, uom)
 
-            # if the no break policy is not set, then order_multiple can be 0,
-            # there is definitely some discussion needed here about the implication of this
+                # if the no break policy is not set, then order_multiple can be 0,
+                # there is definitely some discussion needed here about the implication of this
 
-            order_multiple = self.calculate_order_multiple(is_no_break, conversion_factor)
+                order_multiple = self.calculate_order_multiple(is_no_break, conversion_factor)
 
-            # lookup decimal_places by UOM ( default to 0 if no UOM found )
-            decimal_places = decimal_dict.get(uom, 0)
+                # lookup decimal_places by UOM ( default to 0 if no UOM found )
+                decimal_places = decimal_dict.get(uom, 0)
 
-            data = {
-                "ITNO": self.get_item_number(),
-                "AUTP": AltUomEntryType.QUANTITY.value,
-                "ALUN": uom,
-                "DCCD": decimal_places,
-                "COFA": conversion_factor,
-                "DMCF": conversion_form,
-                "PCOF": 1,
-                "AUS1": 1 if is_purchase_uom else 0,
-                "AUS2": 1 if sales_uom == uom else 0,
-                "AUS6": 1 if is_statistics_uom else 0,
-                "UNMU": order_multiple,
-                "AUSB": 1 if is_cost_uom else 0
-            }
-
-            entries.append(data)
-
-            if uom == sales_uom:
                 data = {
                     "ITNO": self.get_item_number(),
-                    "AUTP": AltUomEntryType.PRICE.value,
+                    "AUTP": AltUomEntryType.QUANTITY.value,
                     "ALUN": uom,
-                    # "DCCD": decimal_places,
+                    "DCCD": decimal_places,
                     "COFA": conversion_factor,
                     "DMCF": conversion_form,
-                    "AUS5": 1 if is_purchase_uom else 0,
-                    "AUS9": 1 if is_sales_uom else 0
+                    "PCOF": 1,
+                    "AUS1": 1 if is_purchase_uom else 0,
+                    "AUS2": 1 if sales_uom == uom else 0,
+                    "AUS6": 1 if is_statistics_uom else 0,
+                    "UNMU": order_multiple,
+                    "AUSB": 1 if is_cost_uom else 0
                 }
+
                 entries.append(data)
+
+                if uom == sales_uom:
+                    data = {
+                        "ITNO": self.get_item_number(),
+                        "AUTP": AltUomEntryType.PRICE.value,
+                        "ALUN": uom,
+                        # "DCCD": decimal_places,
+                        "COFA": conversion_factor,
+                        "DMCF": conversion_form,
+                        "AUS5": 1 if is_purchase_uom else 0,
+                        "AUS9": 1 if is_sales_uom else 0
+                    }
+                    entries.append(data)
+
+            except ValueError as e:
+                logging.warning(f"Skipping UOM {uom} for item {self.get_item_number()} due to error: {e}")
+                continue
 
 
         # remove any entries that have a ALUN of CO ( skip container converstions )

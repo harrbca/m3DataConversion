@@ -36,11 +36,11 @@ class UOMService:
                 df = db.fetch_dataframe(self.item_package_query,(self.item_number,))
 
         if df.empty:
-            print(f"Error: No item details found for item number {self.item_number}")
+            self.logger.error(f"No item details found for item number {self.item_number}")
             return None
 
         if len(df) > 1:
-            print(f"Error: Multiple item details found for item number {self.item_number}")
+            self.logger.error(f"Multiple item details found for item number {self.item_number}")
             return None
 
         return df.iloc[0].to_dict()
@@ -50,7 +50,7 @@ class UOMService:
         try:
             dec_qty = Decimal(str(qty))
         except Exception as e:
-            print(f"Error: Unable to convert quantity {qty} to decimal: {e} for item number {self.item_number} package class {self.item_details['IPACCD']}.")
+            self.logger.error(f"Unable to convert quantity {qty} to decimal: {e} for item number {self.item_number} package class {self.item_details['IPACCD']}.")
             return
 
         if to_uom not in graph:
@@ -116,7 +116,12 @@ class UOMService:
                 if neighbor not in visited:
                     queue.append((neighbor, path + [(current_unit, neighbor, conversion_rate)], conversion_rate))
 
-        raise ValueError(f"No conversion path found between {from_uom} and {to_uom}.")
+        #raise ValueError(f"No conversion path found between {from_uom} and {to_uom}.")
+        #print(f"Warning: No conversion path found between {from_uom} and {to_uom} for item number {self.item_number}.")
+        self.logger.warning(
+            f"No conversion path found between {from_uom} and {to_uom} for item number {self.item_number} and package class {self.item_details['IPACCD']}.")
+
+        return path  # Return empty path if no conversion found
 
     def get_uom_list(self):
         return list(self.graph.keys())
