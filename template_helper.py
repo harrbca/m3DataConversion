@@ -36,6 +36,16 @@ class TemplateHelper:
                 raise ValueError(f"Column name {column_name} not found in template")
             self.ws[f"{self.column_map[column_name]}{row}"] = value
 
+    def add_all_rows(self, entries: list[dict]):
+        start_row = self.ws.max_row + 1
+        for i, data in enumerate(entries):
+            row_num = start_row + i
+            for column_name, value in data.items():
+                if column_name not in self.column_map:
+                    raise ValueError(f"Column name {column_name} not found in template")
+                self.ws[f"{self.column_map[column_name]}{row_num}"] = value
+
+
     def save(self, output_file):
         path_manager = PathManager()
         output_path = path_manager.get_path("PATHS", output_file)

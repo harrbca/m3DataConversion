@@ -20,13 +20,15 @@ def main():
     # load the transformer (default or custom)
     transformer = load_transformer("mms200_updItmWhs", transformer_name)
 
+    all_entries = []
+
     for row in df.to_dict(orient='records'):
         print (row["ITEMNUMBER"])
         data = transformer.transform(row)
         if data:
-            for entries in data:
-                template_helper.add_row(entries)
+            all_entries.extend(data)
 
+    template_helper.add_all_rows(all_entries)
     template_helper.save('mms200_updItmWhs_output_path')
 
 if __name__ == "__main__":
