@@ -125,67 +125,10 @@ if __name__ == '__main__':
     )
 
     results_df = pd.DataFrame(results)
-    output_excel = "c:\\infor_migration\\spreadsheets\\map_hierarchy_to_items15.xlsx"
+    output_excel = "c:\\infor_migration\\spreadsheets\\map_hierarchy_to_items16.xlsx"
     results_df.to_excel(output_excel, index=False)
     print(f"📄 Excel written to: {output_excel}")
 
-    # Score histogram (console + PNG)
-    score_counts = results_df["Score"].value_counts().sort_index()
-    print("\n📊 Match Score Distribution:")
-    print(score_counts)
-    print_text_histogram(score_counts)
 
-    # Save PNG histogram
-    plt.figure(figsize=(10, 6))
-    plt.bar(score_counts.index.astype(str), score_counts.values)
-    plt.title("Match Score Distribution")
-    plt.xlabel("Score")
-    plt.ylabel("Number of Matches")
-    plt.grid(axis="y", linestyle="--", alpha=0.7)
-    plt.tight_layout()
-    plt.savefig("c:\\infor_migration\\spreadsheets\\score_histogram.png")
-    plt.close()
-
-    # Match quality summary
-    total_items = len(results_df)
-    matched = results_df[results_df["Score"] > 0]
-    unmatched = results_df[results_df["Score"] == 0]
-    high_quality = results_df[results_df["Score"] >= 4]
-
-    print("\n📈 Match Quality Summary:")
-    print(f"  Total Items      : {total_items}")
-    print(f"  Matched          : {len(matched)} ({len(matched) / total_items:.1%})")
-    print(f"  Unmatched        : {len(unmatched)} ({len(unmatched) / total_items:.1%})")
-    print(f"  Avg. Score       : {results_df['Score'].mean():.2f}")
-    print(f"  Median Score     : {results_df['Score'].median():.1f}")
-    print(f"  High Quality (4+): {len(high_quality)} ({len(high_quality) / total_items:.1%})")
-
-    with open("c:\\infor_migration\\spreadsheets\\match_summary.txt", "w") as f:
-        f.write("Match Quality Summary\n")
-        f.write("=======================\n")
-        f.write(f"Total Items      : {total_items}\n")
-        f.write(f"Matched          : {len(matched)} ({len(matched) / total_items:.1%})\n")
-        f.write(f"Unmatched        : {len(unmatched)} ({len(unmatched) / total_items:.1%})\n")
-        f.write(f"Avg. Score       : {results_df['Score'].mean():.2f}\n")
-        f.write(f"Median Score     : {results_df['Score'].median():.1f}\n")
-        f.write(f"High Quality (4+): {len(high_quality)} ({len(high_quality) / total_items:.1%})\n")
-
-    # Score by product line
-    score_by_product_line = results_df.groupby("PRODUCTLINE")["Score"].agg(["count", "mean", "median"]).sort_values(by="mean", ascending=False)
-    score_by_product_line.to_excel("c:\\infor_migration\\spreadsheets\\score_by_product_line.xlsx")
-    print("\n📊 Top Product Lines by Avg Score:")
-    print(score_by_product_line.head(10))
-
-    # Feature match frequency
-    field_counts = Counter()
-    for fields in results_df["MatchedFields"].dropna():
-        for field in fields.split(", "):
-            if field:
-                field_counts[field] += 1
-
-    field_df = pd.DataFrame.from_dict(field_counts, orient="index", columns=["HitCount"]).sort_values("HitCount", ascending=False)
-    field_df.to_excel("c:\\infor_migration\\spreadsheets\\matched_field_frequency.xlsx")
-    print("\n🧠 Feature Match Contribution:")
-    print(field_df)
 
     print(f"\n✅ Done in {time.time() - start:.2f} seconds")

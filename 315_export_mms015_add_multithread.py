@@ -19,7 +19,8 @@ logging.basicConfig(
 )
 
 
-def transform_row(transformer, row):
+def transform_row(transformer_name, row):
+    transformer = load_transformer("mms015", transformer_name)  # Create a fresh instance per thread
     return transformer.transform(row)
 
 def main():
@@ -36,34 +37,29 @@ def main():
     with Database() as db:
         df = db.fetch_dataframe(query)
 
-    # load the transformer (default or custom)
-    transformer = load_transformer("mms015", transformer_name)
-
     rows = df.to_dict(orient='records')
-
     results = []
 
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        # Submit transform tasks
-        futures = {executor.submit(transform_row, transformer, row): row for row in rows}
+        futures = {
+            executor.submit(transform_row, transformer_name, row): row
+            for row in rows
+        }
 
-        # Collect results with a nice progress bar
         for future in tqdm(concurrent.futures.as_completed(futures), total=len(futures), desc="Transforming rows"):
             try:
                 result = future.result()
                 if result:
                     results.append(result)
             except Exception as e:
-                print(f"Error processing row: {e}")
+                logging.error(f"Error processing row: {e}")
 
-    # Sequentially write the results to Excel
-    print("Writing results to Excel...")
-
+    # Sequential write to Excel
     for data in results:
         for entries in data:
             template_helper.add_row(entries)
 
-    template_helper.save('mms015_add_output_path')
+    template_helper.save("mms015_add_output_path")
 
 if __name__ == "__main__":
     main()

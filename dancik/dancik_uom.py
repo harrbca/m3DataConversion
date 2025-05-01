@@ -11,7 +11,7 @@ class UOMService:
         # setup logging
         self.logger = logging.getLogger(__name__)
         self.final_result_precision = final_result_precision
-        self.db = Database()
+
         self.item_number = item_number
         self.config = ConfigReader.get_instance()
         query_path = self.config.get("QUERIES", "dancik_package_query_path")
@@ -27,12 +27,12 @@ class UOMService:
 
 
     def _load_item_details(self):
-        with self.db as db:
+        with Database() as db:
             df = db.fetch_dataframe(self.package_query, (self.item_number,))
 
 
         if df.empty:
-            with self.db as db:
+            with Database() as db:
                 df = db.fetch_dataframe(self.item_package_query,(self.item_number,))
 
         if df.empty:

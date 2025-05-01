@@ -141,7 +141,7 @@ class MMS015Transformer:
     def get_purchase_uom(self):
         if self.get_basic_uom() == "CT":
             return "SF"
-        return self._item["IUNITC"].strip
+        return self._item["IUNITC"].strip()
 
     def get_sales_uom(self):
         if self.get_basic_uom() == "CT":
