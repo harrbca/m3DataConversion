@@ -7,7 +7,7 @@ class MMS200AddItmViaItmTypTransformer(MMS200Transformer):
         self._item = row
 
         data = {
-            "ITNO": self.get_item_number_DONOTUSE(),
+            "ITNO": self.get_item_number,
             "ITTY": self.get_item_type(),
             "ITDS": self.get_item_name(),
             "FUDS": self.get_item_description(),
@@ -22,7 +22,7 @@ class MMS200AddItmViaItmTypTransformer(MMS200Transformer):
     def get_extended_item_number(self):
         return self._item["ITEMNUMBER"]
 
-    def get_item_number_DONOTUSE(self):
+    def get_item_number(self):
         item_number = self._item["ITEMNUMBER"].strip()
         if len(item_number) < 3:
             return item_number  # Return as is if item_number is too short

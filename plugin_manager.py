@@ -7,6 +7,7 @@ from transformers.crs025_transformer import CRS025Transformer
 from transformers.crs035_transformer import CRS035Transformer
 from transformers.crs099_transformer import CRS099Transformer
 from transformers.crs610_add_transformer import CRS610AddTransformer
+from transformers.mms200_updItmWhs_transformer import MMS200UpdItmWhsTransformer
 
 DEFAULT_TRANSFORMERS = {
     "crs025": CRS025Transformer,
@@ -16,6 +17,7 @@ DEFAULT_TRANSFORMERS = {
     "mms200": MMS200Transformer,
     "mms200_addItmViaItmTyp": MMS200AddItmViaItmTypTransformer,
     "mms200_updItmBasic": MMS200UpdItmBasicTransformer,
+    "mms200_updItmWhs": MMS200UpdItmWhsTransformer,
     "crs610_add": CRS610AddTransformer
 }
 
