@@ -7,7 +7,7 @@ def main():
     config = ConfigReader.get_instance()
     template_helper = TemplateHelper("API_MMS200MI_AddItmViaItmTyp.xlsx")
     query_path = config.get('QUERIES', 'mms200_addItmBasic_sql_query_path')
-    transformer = config.get("TRANSFORMER", "mms200_addItmViaItmType_transformer")
+    transformer_name = config.get("TRANSFORMER", "mms200_addItmViaItmType_transformer")
 
     # load the SQL query
     with open(query_path, 'r') as file:
@@ -18,10 +18,13 @@ def main():
         df = db.fetch_dataframe(query)
 
     # load the transformer (default or custom)
-    transformer = load_transformer("mms200_addItmViaItmTyp", transformer)
+    transformer = load_transformer("mms200_addItmViaItmTyp", transformer_name)
 
     for row in df.to_dict(orient='records'):
         print (row["ITEMNUMBER"])
+        if row["ITEMNUMBER"] is None:
+            print("ITEMNUMBER is None, skipping row")
+            continue
         data = transformer.transform(row)
         if data:
             template_helper.add_row(data)

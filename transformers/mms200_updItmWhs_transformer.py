@@ -8,7 +8,7 @@ class MMS200UpdItmWhsTransformer:
     def __init__(self):
         self._item = None
         self._item_number_strategy = load_item_number_strategy()
-        self._warehouses = ["SAS", "CAL", "EDM", "REG", "VAN", "WIN", "POR", "TUK", "SPO", "XGA", "XSE", "XID"]
+        self._warehouses = ["SAS", "CAL", "EDM", "REG", "VAN", "WIN", "POR", "TUK", "SPO"]
 
     def transform(self, row):
         entries = []

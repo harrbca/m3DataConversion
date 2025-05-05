@@ -8,11 +8,13 @@ from transformers.crs035_transformer import CRS035Transformer
 from transformers.crs099_transformer import CRS099Transformer
 from transformers.crs610_add_transformer import CRS610AddTransformer
 from transformers.mms200_updItmWhs_transformer import MMS200UpdItmWhsTransformer
+from transformers.mms010_addLocation_transformer import MMS010AddLocationTransformer
 
 DEFAULT_TRANSFORMERS = {
     "crs025": CRS025Transformer,
     "crs035": CRS035Transformer,
     "crs099": CRS099Transformer,
+    "mms010_addLocation": MMS010AddLocationTransformer,
     "mms015": MMS015Transformer,
     "mms200": MMS200Transformer,
     "mms200_addItmViaItmTyp": MMS200AddItmViaItmTypTransformer,

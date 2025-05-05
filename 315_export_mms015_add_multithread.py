@@ -55,10 +55,14 @@ def main():
                 logging.error(f"Error processing row: {e}")
 
     # Sequential write to Excel
+    all_entries = []
     for data in results:
-        for entries in data:
-            template_helper.add_row(entries)
+        if isinstance(data, list):
+            all_entries.extend(data)
+        else:
+            logging.error(f"Unexpected result type in results: {type(data)} — {data}")
 
+    template_helper.add_all_rows(all_entries)
     template_helper.save("mms015_add_output_path")
 
 if __name__ == "__main__":

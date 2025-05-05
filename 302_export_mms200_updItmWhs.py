@@ -24,6 +24,8 @@ def main():
 
     for row in df.to_dict(orient='records'):
         print (row["ITEMNUMBER"])
+        if row["ITEMNUMBER"] is None:
+            continue
         data = transformer.transform(row)
         if data:
             all_entries.extend(data)

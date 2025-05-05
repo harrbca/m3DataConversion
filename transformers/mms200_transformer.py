@@ -1,8 +1,7 @@
 from m3.M3Types import (InventoryAccounting, AltUomInUse, MakeBuyCode, LotControlMethod, ReturnableMessage, LotNumberMethod, ReturnableIndicator)
 from dancik.dancik_uom import UOMService
-from m3.item_number_lookup import ItemNumberLookup
+from strategy_loader import load_item_number_strategy
 
-xref_item_number_lookup = ItemNumberLookup()
 
 class MMS200Transformer:
     """
@@ -12,9 +11,9 @@ class MMS200Transformer:
     """
 
     def __init__(self):
-        self.xref_item_number_lookup = xref_item_number_lookup
         self._item = None  # We'll store the "current row" here as item
         self._uom_service = None # We'll store the UOM service here
+        self._item_number_strategy = load_item_number_strategy()
 
     def transform(self, row):
         if not row:
@@ -98,8 +97,7 @@ class MMS200Transformer:
         return 20
 
     def get_item_number(self):
-        item_number = self._item["ITEMNUMBER"].strip()
-        return self.xref_item_number_lookup.get_item_number(item_number)
+        return self._item_number_strategy.get_item_number(self._item)
 
     def get_item_name(self):
         return f"{self._item["INAME"].strip()} {self._item["INAME2"].strip()}"

@@ -40,6 +40,30 @@ def vectorized_match(item, weights=None):
     item_class2 = item["ICLAS2"].strip()
     price_class = item["IPRCCD"].strip()
 
+    # 🆕 Early return for sample items
+    if product_line in {"SAM", "SET"}:
+        return {
+            "ITEMNUMBER": item["ITEMNUMBER"],
+            "INAME": item["INAME"],
+            "INAME2": item["INAME2"],
+            "MFGR": item["IMFGR"],
+            "PRODUCTLINE": product_line,
+            "ITEMCLASS1": item["ICLAS1"].strip(),
+            "ITEMCLASS2": item["ICLAS2"].strip(),
+            "PRICECLASS": item["IPRCCD"].strip(),
+            "ItemType": "SAM",
+            "H1": "SAM",
+            "H2": None,
+            "H3": None,
+            "H4": None,
+            "H1Desc": "SAMPLE",
+            "H2Desc": None,
+            "H3Desc": None,
+            "H4Desc": None,
+            "Score": 0,
+            "MatchedFields": "SAMPLE_OVERRIDE"
+        }
+
     df = _global_df
 
     # ❗ Filter out any rows where price_class matches OPC1 to OPC4
@@ -113,7 +137,7 @@ if __name__ == '__main__':
     print("🔄 Connecting to database...")
     conn = sqlite3.connect(r"c:\\infor_migration\\db\\migration.db")
     cursor = conn.cursor()
-    rows = cursor.execute("SELECT * FROM items WHERE iprodl != 'SAM' ORDER BY itemnumber").fetchall()
+    rows = cursor.execute("SELECT * FROM items ORDER BY itemnumber").fetchall()
     col_names = [desc[0].upper() for desc in cursor.description]
     items = [dict(zip(col_names, row)) for row in rows]
     conn.close()

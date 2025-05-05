@@ -1,4 +1,5 @@
 from strategies.base_item_number_strategy import ItemNumberStrategy
+import re
 
 class BWLGetItemNumberStrategy(ItemNumberStrategy):
     def get_item_number(self, item: dict) -> str:
@@ -15,5 +16,9 @@ class BWLGetItemNumberStrategy(ItemNumberStrategy):
         # Determine new prefix
         new_prefix = special_prefixes.get(mfgr_prefix, mfgr_prefix[:2])
 
-        # Construct the new item number
-        return new_prefix + item_suffix
+        cleaned_item_number = new_prefix + item_suffix
+
+        return self._sanitize(cleaned_item_number)
+
+    def _sanitize(self, value: str) -> str:
+        return re.sub(r"[ \\/&.]", "_", value)
