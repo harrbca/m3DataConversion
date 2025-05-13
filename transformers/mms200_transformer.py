@@ -142,13 +142,9 @@ class MMS200Transformer:
         return InventoryAccounting.INV_ACCOUNTING
 
     def get_returnable_indicator(self):
-        if self._item["IINVEN"].strip() == 'Y':
-            return ReturnableIndicator.RETURNABLE
-        return ReturnableIndicator.NOT_RETURNABLE
+        return ReturnableIndicator.RETURNABLE
 
     def get_returnable_message(self):
-        if self._item["IINVEN"].strip() == 'Y':
-            return ReturnableMessage.NO_MESSAGES
         return ReturnableMessage.WARNING_WARN
 
     def get_net_weight(self):
