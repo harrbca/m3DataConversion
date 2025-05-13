@@ -5,6 +5,7 @@ from plugin_manager import load_transformer
 from config_reader import ConfigReader
 from tqdm import tqdm
 import logging
+import re
 
 def transform_row(transformer_name, row):
     if row["ITEMNUMBER"] is None:
@@ -17,6 +18,7 @@ def main():
     template_helper = TemplateHelper("API_MMS200MI_UpdItmBasic.xlsx")
     query_path = config.get('QUERIES', 'mms200_addItmBasic_sql_query_path')
     transformer_name = config.get("TRANSFORMER", "mms200_updItmBasic_transformer")
+    BAD_CHAR_RE = re.compile(r'[^0-9A-Za-z-]')
 
     # Load the SQL query
     with open(query_path, 'r') as file:
@@ -26,7 +28,14 @@ def main():
     with Database() as db:
         df = db.fetch_dataframe(query)
 
-    rows = df.to_dict(orient='records')
+    rows = [
+        row
+        for row in df.to_dict(orient="records")
+        if row.get("ITEMNUMBER") is not None  # keep non‑null
+           and not BAD_CHAR_RE.search(str(row["ITEMNUMBER"]).rstrip())  # screen out bad chars
+    ]
+
+
     all_entries = []
 
     with concurrent.futures.ThreadPoolExecutor() as executor:

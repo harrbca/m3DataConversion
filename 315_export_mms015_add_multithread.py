@@ -6,6 +6,7 @@ from config_reader import ConfigReader
 from tqdm import tqdm  # For nice progress bar
 import logging
 from datetime import datetime
+import re
 
 # Set up logging to file
 log_filename = f"mms015_transform_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log"
@@ -28,6 +29,7 @@ def main():
     template_helper = TemplateHelper("API_MMS015MI_Add.xlsx")
     query_path = config.get('QUERIES', 'mms200_addItmBasic_sql_query_path')
     transformer_name = config.get("TRANSFORMER", "mms015_transformer")
+    BAD_CHAR_RE = re.compile(r'[^0-9A-Za-z-]')
 
     # load the SQL query
     with open(query_path, 'r') as file:
@@ -37,7 +39,13 @@ def main():
     with Database() as db:
         df = db.fetch_dataframe(query)
 
-    rows = df.to_dict(orient='records')
+    rows = [
+        row
+        for row in df.to_dict(orient="records")
+        if row.get("ITEMNUMBER") is not None  # keep non‑null
+           and not BAD_CHAR_RE.search(str(row["ITEMNUMBER"]).rstrip())  # screen out bad chars
+    ]
+
     results = []
 
     with concurrent.futures.ThreadPoolExecutor() as executor:
